@@ -18,46 +18,46 @@ CREATE TABLE users (
 
 CREATE TABLE flokkur (
   id serial primary key,
-  title character VARCHAR (64) NOT NULL UNIQUE
+  title character varying(64) NOT NULL UNIQUE
 );
 
 CREATE TABLE vorur (
   id serial primary key,
-  title character VARCHAR(64) NOT NULL UNIQUE,
+  title VARCHAR(64) NOT NULL UNIQUE,
   price INTEGER NOT NULL,
-  description verying(256) NOT NULL,
+  description VARCHAR(256) NOT NULL,
   image VARCHAR(255) NOT NULL,
-  "flokkur" INTEGER NOT NULL,
-  CONSTRAINT "flokkur" FOREIGN KEY ("flokkur") REFERENCES flokkur (id) ON DELETE CASCADE,
+  "flokkurID" INTEGER NOT NULL,
+  CONSTRAINT "flokkurID" FOREIGN KEY ("flokkurID") REFERENCES flokkur (id) ON DELETE CASCADE,
   created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT current_timestamp,
   updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT current_timestamp
 );
 
 CREATE TABLE karfa (
-  id character VARCHAR(255) NOT null UNIQUE,
+  id VARCHAR(255) NOT null UNIQUE,
   created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT current_timestamp
 );
 
 CREATE TABLE linaIKorfu (
-  "vara" INTEGER NOT NULL,
-  CONSTRAINT "vara" FOREIGN KEY ("vara") REFERENCES vorur (id) ON DELETE CASCADE,
-  "vara" INTEGER NOT NULL,
-  CONSTRAINT "karfa" FOREIGN KEY ("karfa") REFERENCES karfa (id) ON DELETE CASCADE,
+  "varaID" INTEGER NOT NULL,
+  CONSTRAINT "varaID" FOREIGN KEY ("varaID") REFERENCES vorur (id) ON DELETE CASCADE,
+  "karfaID" VARCHAR(255) NOT NULL,
+  CONSTRAINT "karfaID" FOREIGN KEY ("karfaID") REFERENCES karfa (id) ON DELETE CASCADE,
   fjoldi INTEGER NOT NULL,
   CHECK (fjoldi > 0)
 );
 
 CREATE TABLE pontun (
-  id character VARCHAR(255) NOT NULL UNIQUE,
+  id VARCHAR(255) NOT NULL UNIQUE,
   created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT current_timestamp,
   name VARCHAR(64) NOT NULL
 );
 
 CREATE TABLE linaIPontun (
-  "vara" INTEGER NOT NULL,
-  CONSTRAINT "vara" FOREIGN KEY ("vara") REFERENCES vorur (id) ON DELETE CASCADE,
-  "vara" INTEGER NOT NULL,
-  CONSTRAINT "karfa" FOREIGN KEY ("karfa") REFERENCES karfa (id) ON DELETE CASCADE,
+  "varaID" INTEGER NOT NULL,
+  CONSTRAINT "varaID" FOREIGN KEY ("varaID") REFERENCES vorur (id) ON DELETE CASCADE,
+  "karfaID" VARCHAR(255) NOT NULL,
+  CONSTRAINT "karfaID" FOREIGN KEY ("karfaID") REFERENCES karfa (id) ON DELETE CASCADE,
   fjoldi INTEGER NOT NULL,
   CHECK (fjoldi > 0)
 );
@@ -65,9 +65,9 @@ CREATE TABLE linaIPontun (
 CREATE TYPE pontunState AS ENUM ('NEW', 'PREPARE', 'COOKING', 'READY', ' FINISHED');
 
 CREATE TABLE stodurPantana (
-  "pontun" INTEGER NOT NULL,
-  CONSTRAINT "pontun" FOREIGN KEY ("pontun") REFERENCES pontun (id) ON DELETE CASCADE,
-  state stodurPantana NOT NULL,
+  "pontunID" VARCHAR(255) NOT NULL,
+  CONSTRAINT "pontunID" FOREIGN KEY ("pontunID") REFERENCES pontun (id) ON DELETE CASCADE,
+  state pontunState NOT NULL,
   created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT current_timestamp
 );
 
