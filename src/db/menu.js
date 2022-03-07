@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 
 import { toPositiveNumberOrDefault } from './../utils/toPositiveNumberOrDefault.js';    
 
+dotenv.config();
+
 const { DATABASE_URL: connectionString, NODE_ENV: nodeEnv = 'development' } =
   process.env;
 

@@ -10,14 +10,13 @@ import jwt from 'jsonwebtoken';
 import { router as userRouter } from './api/users.js';
 import { router as menuRouter } from './api/menu.js';
 import { router as catRouter } from './api/category.js';
+import { router as cartRouter } from './api/cart.js';
 
 import {
   findById
 } from './db/users.js';
 
 dotenv.config();
-
-const ssl = nodeEnv === 'production' ? { rejectUnauthorized: false } : false;
 
 const {
   HOST: hostname = '127.0.0.1',
@@ -26,6 +25,7 @@ const {
   TOKEN_LIFETIME: tokenLifetime = 20000,
   DATABASE_URL: databaseUrl,
 } = process.env;
+
 
 if (!jwtSecret || !databaseUrl) {
   console.error('Vantar .env gildi');
@@ -70,6 +70,7 @@ app.get('/', (req, res) => {
 app.use('/users/', userRouter);
 app.use('/menu', menuRouter);
 app.use('/categories', catRouter);
+app.use('/cart', cartRouter);
 
 app.use((req, res) => {
     console.warn('Not found', req.originalUrl);

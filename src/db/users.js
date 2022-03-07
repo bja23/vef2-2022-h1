@@ -2,6 +2,8 @@ import bcrypt from 'bcrypt';
 import pg from 'pg';
 import dotenv from 'dotenv';
 
+dotenv.config();
+
 const { DATABASE_URL: connectionString, NODE_ENV: nodeEnv = 'development' } =
   process.env;
 
