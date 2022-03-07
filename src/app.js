@@ -24,8 +24,10 @@ const {
   JWT_SECRET: jwtSecret,
   TOKEN_LIFETIME: tokenLifetime = 20000,
   DATABASE_URL: databaseUrl,
+  NODE_ENV: nodeEnv = 'development',
 } = process.env;
 
+const ssl = nodeEnv === 'production' ? { rejectUnauthorized: false } : false;
 
 if (!jwtSecret || !databaseUrl) {
   console.error('Vantar .env gildi');
