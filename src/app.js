@@ -28,7 +28,6 @@ const {
 } = process.env;
 
 const ssl = nodeEnv === 'production' ? { rejectUnauthorized: false } : false;
-
 if (!jwtSecret || !databaseUrl) {
   console.error('Vantar .env gildi');
   process.exit(1);
