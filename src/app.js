@@ -17,6 +17,8 @@ import {
 
 dotenv.config();
 
+const ssl = nodeEnv === 'production' ? { rejectUnauthorized: false } : false;
+
 const {
   HOST: hostname = '127.0.0.1',
   PORT: port = 3000,
