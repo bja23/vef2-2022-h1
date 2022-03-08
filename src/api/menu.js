@@ -23,17 +23,16 @@ import {
 
 dotenv.config();
 
-const {
-  HOST: hostname = '127.0.0.1',
-  PORT: port = 3000,
+const { 
+  DATABASE_URL: connectionString,
+  NODE_ENV: nodeEnv = 'development',
   JWT_SECRET: jwtSecret,
   TOKEN_LIFETIME: tokenLifetime = 20000,
-  DATABASE_URL: databaseUrl,
-} = process.env;
+} =process.env;
 
-if (!jwtSecret || !databaseUrl) {
-  console.error('Vantar menu.env gildi');
-  process.exit(1);
+if (!connectionString) {
+  console.error('vantar DATABASE_URL í .env');
+  process.exit(-1);
 }
 
 export const router = express.Router();
