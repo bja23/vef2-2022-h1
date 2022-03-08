@@ -2,7 +2,6 @@ import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt';
 import pg from 'pg';
 import dotenv from 'dotenv';
-import { v4 } from 'uuid';
 
 dotenv.config();
 
