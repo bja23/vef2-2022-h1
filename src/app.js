@@ -21,7 +21,7 @@ dotenv.config();
 const {
   HOST: hostname = '127.0.0.1',
   PORT: port = 3000,
-  JWT_SECRET: jwtSecret = $dk3Ae9dknv#Gposiuhvkjkljd,
+  JWT_SECRET: jwtSecret = "$dk3Ae9dknv#Gposiuhvkjkljd",
   TOKEN_LIFETIME: tokenLifetime = 20000,
   DATABASE_URL: databaseUrl,
 } = process.env;
