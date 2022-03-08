@@ -32,7 +32,7 @@ const {
 } = process.env;
 
 if (!jwtSecret || !databaseUrl) {
-  console.error('Vantar .env gildi');
+  console.error('Vantar menu.env gildi');
   process.exit(1);
 }
 

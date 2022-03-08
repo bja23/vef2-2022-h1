@@ -39,7 +39,7 @@ if (!databaseUrl) {
 }
 
 if (!jwtSecret) {
-  console.error('Vantar db.env gildi');
+  console.error('Vantar js.env gildi');
   process.exit(1);
 }
 

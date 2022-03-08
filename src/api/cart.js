@@ -28,7 +28,7 @@ const {
 } = process.env;
 
 if (!jwtSecret || !databaseUrl) {
-  console.error('Vantar .env gildi');
+  console.error('Vantar cart.env gildi');
   process.exit(1);
 }
 
