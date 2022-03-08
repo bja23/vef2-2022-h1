@@ -38,10 +38,6 @@ if (!databaseUrl) {
   process.exit(1);
 }
 
-if (!jwtSecret) {
-  console.error('Vantar js.env gildi');
-  process.exit(1);
-}
 
 const app = express();
 
