@@ -9,7 +9,7 @@
     "start": "node ./src/app.js",
     "test": "NODE_ENV=test NODE_OPTIONS='--experimental-vm-modules' dotenv -e .env.test -- jest ./*.test.js",
     "prettier": "prettier --write .",
-    "lint": "concurrently npm:lint:*",
+    "lint": "concurrently yarn:lint:*",
     "lint:eslint": "eslint ./src/**/*.js",
     "lint:stylelint": "stylelint ./public/styles.css",
     "dev": "nodemon ./src/app.js"
