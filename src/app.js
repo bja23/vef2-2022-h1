@@ -26,8 +26,20 @@ const {
   DATABASE_URL: databaseUrl,
 } = process.env;
 
+/*
 if (!jwtSecret || !databaseUrl) {
   console.error('Vantar .env gildi');
+  process.exit(1);
+}
+*/
+
+if (!databaseUrl) {
+  console.error('Vantar db.env gildi');
+  process.exit(1);
+}
+
+if (!jwtSecret) {
+  console.error('Vantar db.env gildi');
   process.exit(1);
 }
 
