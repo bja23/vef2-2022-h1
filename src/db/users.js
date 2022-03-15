@@ -60,6 +60,22 @@ export async function query(q, values = []) {
   
     return false;
   }
+  export async function findByEmail(email) {
+    const q = 'SELECT * FROM users WHERE email = $1';
+  
+    try {
+      const result = await query(q, [email]);
+  
+      if (result.rowCount === 1) {
+        return result.rows[0];
+      }
+    } catch (e) {
+      console.error('Gat ekki fundið notanda eftir emaili');
+      return null;
+    }
+  
+    return false;
+  }
   
   // Check if user is Admin
   export async function isAdmin(username) {
@@ -111,10 +127,10 @@ export async function query(q, values = []) {
   }
   
   
-  export async function createUser(name,username,password) {
-      const q = `INSERT INTO users (name,username,password )
-      VALUES($1, $2,$3)`;
-      const values = [name, username, password];
+  export async function createUser(name,username,email,password) {
+      const q = `INSERT INTO users (name,username,email,password )
+      VALUES($1, $2,$3, $4)`;
+      const values = [name, username,email, password];
       try {
         const result = await query(q, values);
         if(result){
@@ -127,3 +143,52 @@ export async function query(q, values = []) {
     
       return null;
     }
+
+    export async function changeUserAdminRight(id, admin) {
+      const q = 'UPDATE users SET isAdmin = $2 WHERE id=$1';
+      const values = [id, admin];
+      try {
+        const result = await query(q, values);
+        if(result){
+            return true;
+        }
+      } catch (e) {
+        console.error('error inserting into user');
+        return false;
+      }
+    
+      return null;
+    }
+
+    export async function changeUserEmail(id, email) {
+      const q = 'UPDATE users SET email = $2 WHERE id=$1';
+      const values = [id, email];
+      try {
+        const result = await query(q, values);
+        if(result){
+            return true;
+        }
+      } catch (e) {
+        console.error('error inserting into user');
+        return false;
+      }
+    
+      return null;
+    }
+
+    export async function changeUserPassword(id, password) {
+      const q = 'UPDATE users SET password = $2 WHERE id=$1';
+      const values = [id, password];
+      try {
+        const result = await query(q, values);
+        if(result){
+            return true;
+        }
+      } catch (e) {
+        console.error('error inserting into user');
+        return false;
+      }
+    
+      return null;
+    }
+    

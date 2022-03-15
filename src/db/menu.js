@@ -58,9 +58,25 @@ export async function query(q, values = []) {
     };
   }
   
-  export async function findAllProducts(offset, limit) {
-    const q = 'SELECT * FROM vorur ORDER BY "created" DESC LIMIT $1 OFFSET $2';
-    const values = [limit, offset];
+  export async function findAllProducts(offset, limit, cat, search) {
+    let q;
+    let values;
+
+    if((cat !== false) && (search !== false)){
+      const newSearch = '%' + search + '%';
+      q = 'SELECT * FROM vorur WHERE "flokkurID" = $3 AND title LIKE $4 OR description LIKE $4 ORDER BY "created" DESC LIMIT $1 OFFSET $2';
+      values = [limit, offset, cat, newSearch];
+    } else if((cat !== false) && (search === false)){
+      q = 'SELECT * FROM vorur WHERE "flokkurID" = $3 ORDER BY "created" DESC LIMIT $1 OFFSET $2';
+      values = [limit, offset, cat];
+    } else if((cat === false) && (search !== false)){
+      const newSearch = '%' + search + '%';
+      q = 'SELECT * FROM vorur WHERE title LIKE $3 OR description LIKE $3 ORDER BY "created" DESC LIMIT $1 OFFSET $2';
+      values = [limit, offset, newSearch];
+    } else{
+      q = 'SELECT * FROM vorur ORDER BY "created" DESC LIMIT $1 OFFSET $2';
+      values = [limit, offset];
+    }
     const limitAsNumber = toPositiveNumberOrDefault(limit, 10);
     const offsetAsNumber = toPositiveNumberOrDefault(offset, 0);
   
@@ -108,6 +124,25 @@ export async function query(q, values = []) {
       console.error('gat ekki fundið vöru');
       return false;
     }
+  }
+
+  export async function findFlokkByID(id) {
+    const q = 'SELECT * FROM flokkur WHERE title = $1';
+    const values = [id];
+  
+    try {
+        const result = await query(q,values);
+        if(result.rowCount > 0){
+          return {
+              product: result.rows
+            };
+          }
+
+    } catch (e) {
+      console.error('gat ekki fundið flokk');
+      return false;
+    }
+    return false;
   }
 
   export async function updateProductsByID(id, title) {

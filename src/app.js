@@ -11,6 +11,7 @@ import { router as userRouter } from './api/users.js';
 import { router as menuRouter } from './api/menu.js';
 import { router as catRouter } from './api/category.js';
 import { router as cartRouter } from './api/cart.js';
+import { router as ordersRouter } from './api/orders.js';
 
 import {
   findById
@@ -73,6 +74,7 @@ app.use('/users/', userRouter);
 app.use('/menu', menuRouter);
 app.use('/categories', catRouter);
 app.use('/cart', cartRouter);
+app.use('/orders', ordersRouter);
 
 app.use((req, res) => {
     console.warn('Not found', req.originalUrl);

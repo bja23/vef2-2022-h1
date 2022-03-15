@@ -13,6 +13,7 @@ import {
     findProductsByID,
     updateProductsByID,
     deleteProductsByID,
+    findFlokkByID,
 } from './../db/menu.js';
 
 import {
@@ -64,21 +65,20 @@ function requireAuthentication(req, res, next) {
   }
 
 router.get('/', async (req, res) => {
-    const { offset = 0, limit = 10 } = req.query;
-    const prod = await findAllProducts(offset, limit);
+    const { offset = 0, limit = 10, category = false, search = false } = req.query;
+    let catName = false;
+    if(category !== false){
+      const getID = await findFlokkByID(category);
+      if(getID !== false){
+        catName = getID.product[0].id;
+      }
+    }
+
+    const prod = await findAllProducts(offset, limit, catName, search);
     if(!prod){
         return res.status(400).json({ error: 'Engar niðurstöður fundust eða leit klikkaði'});
     }
-    console.log(prod);
     return res.status(200).json(prod);
-    
-  });
-
-  router.get('/?category', async (req, res) => {
-    const { category: category } = req.params;
-    const { offset = 0, limit = 10 } = req.query;
-    console.log(category);
-    return res.status(200).json({error: "egna"});
     
   });
 

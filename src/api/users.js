@@ -14,6 +14,9 @@ import {
     isAdmin,
     findAllUsers,
     createUser,
+    findByEmail,
+    changeUserAdminRight,
+    changeUserEmail,
 } from './../db/users.js';
 
 
@@ -43,10 +46,13 @@ const jwtOptions = {
 
 router.post('/login', async (req, res) => {
     const { username, password = '' } = req.body;
-    const user = await findByUsername(username);
+    let user = await findByUsername(username);
 
     if (!user) {
-      return res.status(401).json({ error: 'No such user' });
+      user = await findByEmail(username);
+      if(!user){
+        return res.status(401).json({ error: 'No such user' });
+      }
     }
   
     const passwordIsCorrect = await comparePasswords(password, user.password);
@@ -99,6 +105,11 @@ router.get('/', requireAuthentication, async (req, res) => {
     body('username')
       .isLength({ min: 1, max: 64 })
       .withMessage('username má ekki vera tómt'),
+    body('email')
+      .isLength({ min: 3, max: 254 })
+      .withMessage(
+        'email verður að vera 3 stafir eða lengra og ekki stærra en 254'
+      ),
     body('password')
       .isLength({ min: 3, max: 254 })
       .withMessage(
@@ -120,20 +131,21 @@ router.get('/', requireAuthentication, async (req, res) => {
     body('name').trim().escape(),
     body('username').trim().escape(),
     body('name').customSanitizer((value) => xss(value)),
+    body('email').customSanitizer((value) => xss(value)),
     body('username').customSanitizer((value) => xss(value)),
     body('password').customSanitizer((value) => xss(value)),
   ];
 
 router.post(
-    '/users/register',
+    '/register',
     validation,
     validationRegister,
     sanitazion,
     async (req, res) => {
-      const { name, username, password } = req.body;
+      const { name, username,email, password } = req.body;
       const pass = await bcrypt.hash(password, 10);
   
-      const test = await createUser(name, username, pass);
+      const test = await createUser(name, username,email, pass);
       if (test) {
         // eslint-disable-next-line object-shorthand
         const myData = [{ userCreted: test, name: name, username: username }];
@@ -144,20 +156,48 @@ router.post(
     }
   );
   
-  router.get('/users/me', requireAuthentication, async (req, res) => {
+  router.get('/me', requireAuthentication, async (req, res) => {
     const myData = await findByUsername(req.user.username);
     const showData = [
       {
         id: myData.id,
         name: myData.name,
         username: myData.username,
+        email: myData.email,
         token: req.user.token,
       },
     ];
     return res.status(201).json(showData);
   });
   
-  router.get('/users/', requireAuthentication, async (req, res) => {
+  router.patch('/me', requireAuthentication, async (req, res) => {
+    const { email = '', password = '' } = req.body;
+    const user = req.user.id;
+    let em = false;
+    let pas = false;
+
+    if(email !== ''){
+      const email2 = await changeUserEmail(user, email);
+      if(email2){
+        em = true;
+      }
+    }
+
+    if(password !== ''){
+      const pass = await bcrypt.hash(password, 10);
+      const password2 = await changeUserEmail(user, pass);
+      if(password2){
+        pas = true;
+      }
+    }
+    if(!pas && !em){
+      return res.status(400).json({error: ' could not change pass or email'});
+    }
+
+    return res.status(200).json({password: pas, email: em});
+  });
+
+  router.get('/', requireAuthentication, async (req, res) => {
     const myData = await findAllUsers();
     const myInfo = await findById(req.user.id);
     if (myInfo[0].isAdmin) {
@@ -166,7 +206,7 @@ router.post(
     return res.status(400).json({ error: 'not admin' });
   });
   
-  router.get('/users/:id', requireAuthentication, async (req, res) => {
+  router.get('/:id', requireAuthentication, async (req, res) => {
     const { id } = req.params;
     // check if user is admin
     const isUserAdmin = await isAdmin(req.user.username);
@@ -177,6 +217,26 @@ router.post(
         return res.status(201).json(showData);
       }
       return res.status(404).json({ error: 'Not found' });
+    }
+    return res.status(400).json({ error: 'Notandi er ekki stjórnandi' });
+  });
+
+  router.patch('/:id', requireAuthentication, async (req, res) => {
+    const { id } = req.params;
+    const { shouldBeAdmin } = req.body;
+    // check if user is admin
+    const isUserAdmin = await isAdmin(req.user.username);
+    console.log(req.user.id, " ", id);
+    if (isUserAdmin.isadmin) {
+      if(req.user.id != id){
+        const change = changeUserAdminRight(id, shouldBeAdmin);
+        if(change){
+          return res.status(200).json({msg: "changed user to " + shouldBeAdmin});
+        }
+        return res.status(400).json({error: 'did not work'})
+
+      }
+      return res.status(401).json({error: 'Notandni má ekki breyta sjálfum sér'});
     }
     return res.status(400).json({ error: 'Notandi er ekki stjórnandi' });
   });

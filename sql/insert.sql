@@ -1,6 +1,6 @@
 
-INSERT INTO users (name, username, password, isAdmin) VALUES ('Björgvin','admin', '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii', TRUE);
-INSERT INTO users (name, username, password) VALUES ('NOTBjörgvin','notadmin', '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii');
+INSERT INTO users (name, username, email, password, isAdmin) VALUES ('Björgvin','admin','bja23@hi.is','$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii', TRUE);
+INSERT INTO users (name, username, email, password) VALUES ('NOTBjörgvin','notadmin','bjorgvinja@gmai.com', '$2a$11$pgj3.zySyFOvIQEpD7W6Aund1Tw.BFarXxgLJxLbrzIv/4Nteisii');
 
 INSERT INTO flokkur (title) VALUES ('Pizza');
 INSERT INTO flokkur (title) VALUES('Hamborgari');

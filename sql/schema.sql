@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS pontunState;
 CREATE TABLE users (
   id serial primary key,
   name character varying(64) NOT NULL,
+  email VARCHAR(256) NOT NULL UNIQUE,
   username character varying(64) NOT NULL UNIQUE,
   password character varying(255) NOT NULL,
   isAdmin BOOLEAN DEFAULT FALSE
