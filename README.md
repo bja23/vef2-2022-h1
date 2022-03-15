@@ -1,5 +1,15 @@
 # vef2-2022-h1
 
+notendur:
+user: admin
+email: bja23@hi.is
+pass: 123
+
+user: notadmin
+email: bjorgvinja@gmail.com
+pass: 123
+
+
 login 
 curl --location --request POST 'http://localhost:7777/users/login' \
 --header 'Content-Type: application/json' \
