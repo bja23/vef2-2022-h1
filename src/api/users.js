@@ -98,6 +98,10 @@ router.get('/', requireAuthentication, async (req, res) => {
     
   });
 
+  router.get('/isTokenLegal/', requireAuthentication, async (req, res) => {
+    return res.json({login: true});
+  });
+
   const validation = [
     body('name')
       .isLength({ min: 1, max: 64 })

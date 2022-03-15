@@ -15,7 +15,7 @@
     "lint": "concurrently npm:lint:*",
     "lint:eslint": "eslint ./src/**/*.js",
     "lint:stylelint": "stylelint ./public/styles.css",
-    "dev": "nodemon ./src/app.js"
+    "dev": "nodemon  ./src/app.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -23,11 +23,14 @@
     "express": "^4.17.3",
     "express-validator": "^6.14.0",
     "jsonwebtoken": "^8.5.1",
+    "node-fetch": "^3.2.3",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
     "pg": "^8.7.3",
+    "set-interval-async": "^2.0.3",
     "uuid": "^8.3.2",
     "uuidv4": "^6.2.12",
+    "ws": "^8.5.0",
     "xss": "^1.0.11"
   },
   "description": "",

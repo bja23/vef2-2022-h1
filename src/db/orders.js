@@ -124,7 +124,6 @@ export async function query(q, values = []) {
       
         try {
             const result = await query(q,values);
-            console.log(result);
             if(result.rowCount > 0){
                 return result;
         }

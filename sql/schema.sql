@@ -63,7 +63,7 @@ CREATE TABLE linaIPontun (
   CHECK (fjoldi > 0)
 );
 
-CREATE TYPE pontunState AS ENUM ('NEW', 'PREPARE', 'COOKING', 'READY', ' FINISHED');
+CREATE TYPE pontunState AS ENUM ('NEW', 'PREPARE', 'COOKING', 'READY', 'FINISHED');
 
 CREATE TABLE stodurPantana (
   "pontunID" VARCHAR(255) NOT NULL,

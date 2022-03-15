@@ -132,30 +132,31 @@ router.post('/:id/status',requireAuthentication, async (req, res) => {
     const stata = await getPontunStada(id);
     if(stata !== false){
       let thisState;
-      if(stata.state == 'NEW'){
+      if(stata.rows[0].state == 'NEW'){
         thisState = await updatePontunStada(id, 'PREPARE');
         if(thisState !== false){
           return res.status(200).json({msg: "updated state"});
         }
       }
-      else if(stata.state == 'PREPARE'){
+      else if(stata.rows[0].state === 'PREPARE'){
         thisState = await updatePontunStada(id, 'COOKING');
         if(thisState !== false){
           return res.status(200).json({msg: "updated state"});
         }
       }
-      else if(stata.state == 'COOKING'){
+      else if(stata.rows[0].state === 'COOKING'){
         thisState = await updatePontunStada(id, 'READY');
         if(thisState !== false){
           return res.status(200).json({msg: "updated state"});
         }
       }
-      else if(stata.state == 'READY'){
+      else if(stata.rows[0].state === 'READY'){
         thisState = await updatePontunStada(id, 'FINISHED');
         if(thisState !== false){
           return res.status(200).json({msg: "updated state"});
         }
       }
+      console.log("komst hingap");
       return res.status(400).json({error: "could not update state"});
     }
     return res.status(400).json({error: "could not update state"});
