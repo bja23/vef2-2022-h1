@@ -45,11 +45,12 @@ const jwtOptions = {
 };
 
 router.post('/login', async (req, res) => {
-    const { username, password = '' } = req.body;
+    const { username, password = '', email = ''} = req.body;
+    console.log(email);
     let user = await findByUsername(username);
 
     if (!user) {
-      user = await findByEmail(username);
+      user = await findByEmail(email);
       if(!user){
         return res.status(401).json({ error: 'No such user' });
       }
